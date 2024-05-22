@@ -21,15 +21,17 @@ const fileNameOfUrl = url => {
     return fileName
 }
 
-const filename = fileNameOfUrl(req.url);
+const fileName = fileNameOfUrl(req.url);
 
-const fileContentOr404 = (filename) => {
-    if(!fs.existsSync(`static/${filename}`)){
-        filename = '404.html';
+const fileContentOr404 = (fileName) => {
+    if(!fs.existsSync(`static/${fileName}`)){
+        fileName = '404.html';
     }
 
-    return fs.readFileSync(`static/${filename}`)
+    return fs.readFileSync(`static/${fileName}`)
 }
+const content = fileContentOr404(fileName)
+res.end(content)
 });
 
 const port = 3000
