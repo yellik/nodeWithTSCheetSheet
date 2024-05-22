@@ -8,7 +8,10 @@ app.get('/', (req, res) => {
         name: "Jelena",
         email: "yelli@gmail"
     }
-    res.json(dev)
+    res
+    .status(201)
+    .setHeader('location', 'api/developers/1')
+    .json(dev)
 });
 
 const port = 3000;
