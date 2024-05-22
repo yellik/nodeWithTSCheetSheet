@@ -1,6 +1,14 @@
 const http = require('http');
 const fs = require('fs');
 
+
+
+
+const server = http.createServer((req, res) => {
+    console.log(`the url for the request was ${req.url}`);
+    console.log(`The Method for the request was '${req.method}'`);
+
+
 const fileNameOfUrl = url => {
     let fileName = '';
     if(req.url.split('/')[1] === '') {
@@ -11,11 +19,13 @@ const fileNameOfUrl = url => {
     return fileName;
 }
 
-const server = http.createServer((req, res) => {
-    console.log(`the url for the request was ${req.url}`);
-    console.log(`The Method for the request was '${req.method}'`);
-
-    const content = fs.readFileSync('./static/index.html')
+    const fileName = fileNameOfUrl(req.url);
+    if(fileName === 'favicon.ico'){
+        res.statusCode = 404;
+        res.end('');
+        return
+    }
+    const content = fs.readFileSync('static/index.html')
 
     res.statusCode = 200;
     res.setHeader('Content-type', 'text/html');
