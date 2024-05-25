@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 
+app.use(express.json())
 const db = [
     {
         id: 1,
@@ -20,6 +21,10 @@ app.get('/api/developers', (req, res) => {
     .json(db)
 });
 
+app.post('/api/developers', (req, res) => {
+    console.log(req.body);
+    res.status(201).end()
+})
 app.get('/api/developers/:id', (req, res) => {
     console.log(`The db contains ${db.length} objects`);
  
@@ -38,11 +43,8 @@ app.get('/api/developers/:id', (req, res) => {
 });
 
 app.get('/api/developers/:id/:name/:address', (req, res) => {
-    const id = req.params.id;
-    const name = req.params.name;
-    const address = req.params.address;
-    console.log(id, name, address);
-    console.log(req.params.id);
+    db.find((id) => dev.id == req.params.id )
+   return dev ? res.json(dev) : res.status(404).end()
 })
 const port = 3000;
 
