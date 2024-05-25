@@ -21,6 +21,7 @@ app.get('/api/developers', (req, res) => {
     .json(db)
 });
 
+
 app.post('/api/developers', (req, res) => {
     const newDeveloper = {
         id: db.length + 1,
@@ -35,18 +36,6 @@ app.post('/api/developers', (req, res) => {
 
 });
 
-app.delete('/api/developers/:id', (req, res) => {
-    console.log(req.params.id);
-    const devIndex = db.findIndex(dev => dev.id == req.params.id)
-    
-    console.log(devIndex);
-    if(devIndex  !== -1) {
-        db.splice(devIndex, 1);
-        res.status(204).end()
-        return
-    }
-    res.status(404).json({ error: `developer with the id ${id} not found` })
-})
 
 app.get('/api/developers/:id', (req, res) => {
     console.log(`The db contains ${db.length} objects`);
@@ -65,6 +54,37 @@ app.get('/api/developers/:id', (req, res) => {
     res.status(404).end();
 });
 
+
+
+app.delete('/api/developers/:id', (req, res) => {
+    console.log(req.params.id);
+    const devIndex = db.findIndex(dev => dev.id == req.params.id)
+    
+    console.log(devIndex);
+    if(devIndex  !== -1) {
+        db.splice(devIndex, 1);
+        res.status(204).end()
+        return
+    }
+    res.status(404).json({ error: `developer with the id ${id} not found` })
+})
+
+app.patch('/api/developers/:id', (req, res) => {
+    const dev = db.find(dev => dev.id == req.params.id);
+
+   if(dev) {
+   
+    if(req.body.name) dev.name = req.body.name;
+    if(req.body.email) dev.email = req.body.email;
+    
+    res.status(200)
+    res.json({message: 'dev successfully updated', developer: dev})
+}else{
+    res.status(404).json({ error: `developer with the id ${req.params.id} not found`})
+
+}
+
+})
 app.get('/api/developers/:id/:name/:address', (req, res) => {
     db.find((id) => dev.id == req.params.id )
    return dev ? res.json(dev) : res.status(404).end()
