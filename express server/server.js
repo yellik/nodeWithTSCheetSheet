@@ -22,9 +22,32 @@ app.get('/api/developers', (req, res) => {
 });
 
 app.post('/api/developers', (req, res) => {
-    console.log(req.body);
-    res.status(201).end()
+    const newDeveloper = {
+        id: db.length + 1,
+        name: req.body.name,
+        email: req.body.email
+    }
+    db.push(newDeveloper);
+
+    res.status(201)
+    .setHeader('location', `/api/developers/${newDeveloper.id}`)
+    .json(newDeveloper)
+
+});
+
+app.delete('/api/developers/:id', (req, res) => {
+    console.log(req.params.id);
+    const devIndex = db.findIndex(dev => dev.id == req.params.id)
+    
+    console.log(devIndex);
+    if(devIndex  !== -1) {
+        db.splice(devIndex, 1);
+        res.status(204).end()
+        return
+    }
+    res.status(404).json({ error: `developer with the id ${id} not found` })
 })
+
 app.get('/api/developers/:id', (req, res) => {
     console.log(`The db contains ${db.length} objects`);
  
